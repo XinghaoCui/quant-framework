@@ -13,6 +13,7 @@ from .features import build_features, build_label, make_dataset
 from .dataset import time_series_split, purged_kfold
 from .models import make_model, ModelWrapper
 from .evaluation import information_coefficient, quantile_backtest
+from .walkforward import walk_forward_predict
 
 __all__ = [
     "build_features",
@@ -24,4 +25,5 @@ __all__ = [
     "ModelWrapper",
     "information_coefficient",
     "quantile_backtest",
+    "walk_forward_predict",
 ]
