@@ -1,0 +1,24 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# 数据缓存（本地存的行情数据不上 GitHub，太大且不应入库）
+data_cache/
+*.parquet
+*.pkl
+*.h5
+
+# 回测输出
+# 说明：示例策略的回测报告（reports/00_synthetic_* 等）特意保留入库，
+# 作为"打开仓库就能看到回测结果"的展示。
+# 如果你不想把自己跑的回测结果提交上去，取消下面这行注释即可：
+# reports/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
