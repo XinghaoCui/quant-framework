@@ -40,6 +40,7 @@
 ├── reports/                  # 回测输出（净值曲线、回撤、指标 csv）
 ├── data_cache/               # 行情本地缓存（gitignore）
 ├── requirements.txt
+├── AUTHOR.md                 # 关于作者
 └── README.md
 ```
 
@@ -178,3 +179,15 @@ class MyStrategy(Strategy):
 - 理解回测的核心数学（向量化、防未来函数、交易成本）
 - 积累可复用的因子和策略代码
 - 作为量化求职的项目展示
+
+## 关于作者
+
+**崔兴昊（Cui Xinghao）**
+北京大学光华管理学院 · 金融学 在读
+
+这个仓库是我学习量化的过程，也是给同样在入门的朋友的一份"我自己希望刚开始就有"的教程。
+欢迎交流学习 / 提建议 / 合作 / 招聘等任何形式的联系。
+
+- 📧 邮箱: [2500015858@stu.pku.edu.cn](mailto:2500015858@stu.pku.edu.cn)
+- 📱 手机 / 微信: 18294156737
+- 🐙 GitHub: [@XinghaoCui](https://github.com/XinghaoCui)
