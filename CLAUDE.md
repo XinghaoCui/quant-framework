@@ -21,19 +21,20 @@
 
 - `src/data/` 数据层（akshare A股 / yfinance 美股，统一宽表接口 + pickle 缓存 + `generate_synthetic_prices` 模拟数据）
 - `src/engine/` 向量化回测引擎 + 绩效指标
-- `src/strategies/` 双均线 / 横截面动量 / 价值因子 / 多因子合成（equal & IC 加权）
+- `src/strategies/` 双均线 / 横截面动量 / 价值因子 / 多因子合成（equal & IC 加权） / OptimizedStrategy（接组合优化）
 - `src/factors/` 技术因子库 + 因子评估工具（IC/IR/分组回测/IC衰减/综合报告）
 - `src/ml/` 机器学习（特征工程 / 防泄露时序划分 / 模型封装 / IC评估 / ML策略 / walk-forward 滚动重训）
-- `examples/` 示例（00 模拟数据全策略；01-03 真实数据策略；10-13 机器学习；20-23 因子研究）
-- `tests/` 单元测试（test_metrics / test_ml / test_walkforward / test_factor_evaluation）
-- `思考与学习/` 8 章中文学习文档（00 写给零基础的你 / 01架构 / 02术语 / 03因子策略 / 04指标 / 05扩展 / 06机器学习 / 07因子研究方法论）
+- `src/portfolio/` 组合优化（min_var / risk_parity / inverse_vol / mean_variance / max_sharpe / 有效前沿），全部 scipy.optimize，零额外依赖
+- `examples/` 示例（00 模拟数据全策略；01-03 真实数据策略；10-13 机器学习；20-23 因子研究；30-32 组合优化）
+- `tests/` 单元测试（test_metrics / test_ml / test_walkforward / test_factor_evaluation / test_portfolio）
+- `思考与学习/` 9 章中文学习文档（00 写给零基础的你 / 01架构 / 02术语 / 03因子策略 / 04指标 / 05扩展 / 06机器学习 / 07因子研究方法论 / 08组合优化）
 
 ## 环境与运行
 
 - Python 3.14、pandas 3.0、numpy 2.4、scikit-learn 1.8。
 - 无网 / yfinance 限流 / Clash 拦截 akshare 时，用 `generate_synthetic_prices` 跑通验证。
 - 跑验证：`PYTHONIOENCODING=utf-8 python examples/00_模拟数据_全策略对比.py`
-- 跑测试：`python tests/test_metrics.py && python tests/test_ml.py && python tests/test_walkforward.py && python tests/test_factor_evaluation.py`
+- 跑测试：`python tests/test_metrics.py && python tests/test_ml.py && python tests/test_walkforward.py && python tests/test_factor_evaluation.py && python tests/test_portfolio.py`
 
 ## Git / 推送
 
@@ -44,15 +45,17 @@
 
 ## 下一步候选扩展（按价值排序）
 
-1. **组合优化（08 章）**：从"等权选 top N"升级到均值-方差 / 风险预算 / 最小方差。文档 07/06 末尾已铺垫。新建 `src/portfolio/optimizer.py`。
-2. **接入基本面数据**：扩展数据层支持 PE/PB/ROE 等财报字段，做真正的价值/质量因子。
-3. **风险归因 / Brinson 分解**：把组合收益拆成"市场 / 风格 / 选股" 三部分，研究层面非常加分。
+1. **接入基本面数据**：扩展数据层支持 PE/PB/ROE 等财报字段，做真正的价值/质量因子。这一步打开"基本面量化"的大门，求职面试时含金量很高。
+2. **风险归因 / Brinson 分解**：把组合收益拆成"市场 / 风格 / 选股" 三部分，研究层面非常加分。配 09 章。
+3. **协方差 shrinkage（Ledoit-Wolf）**：在 `src/portfolio/optimizer.py` 加 shrinkage 包装，08 章 / 05 已铺垫。
 4. **滚动调参**：walk-forward 每轮在训练集内用 `purged_kfold` 选超参（文档 06/08 已铺垫）。
 5. **LightGBM/XGBoost**：在 `src/ml/models.py:make_model` 加分支。
 6. **更多技术 / 量价因子**：换手率因子、量价背离、Amihud 流动性等。
+7. **Black-Litterman 模型**：把 ML 预测作为"观点"接入均值方差，缓解 μ 估不准的问题。
 
 ## 已完成扩展（按时间倒序）
 
+- **08 组合优化**（2026-05-26）：`src/portfolio/optimizer.py`（6 种优化 + 有效前沿） + `src/strategies/optimized.py` + `examples/30~32` + `思考与学习/08_组合优化/` 7 篇。坚持 scipy 零额外依赖。
 - **00 写给零基础的你**（2026-05-26）：`思考与学习/00_写给零基础的你/` 8 篇零基础友好文档（量化是什么/环境/第一个回测/报告解读/阅读地图/FAQ/Python 速通）+ README 顶层入口前置。
 - **07 因子研究方法论**（2026-05-26）：`src/factors/evaluation.py` + `src/strategies/multi_factor.py` + `examples/20~23` + `思考与学习/07_因子研究方法论/` 7 篇。
 - **06 机器学习入门**（含 08 滚动重训）：`src/ml/` 全模块 + 9 篇 ML 文档。
